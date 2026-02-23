@@ -13,6 +13,10 @@
 static constexpr int HALF_SCREEN_WIDTH = bn::display::width() / 2;
 static constexpr bn::fixed MIN_X = -HALF_SCREEN_WIDTH;
 static constexpr bn::fixed MAX_X = HALF_SCREEN_WIDTH;
+// Set max/min for height
+static constexpr int HALF_SCREEN_HEIGHT = bn::display::height()/2;
+static constexpr bn::fixed MIN_Y = -HALF_SCREEN_HEIGHT;
+static constexpr bn::fixed MAX_Y = HALF_SCREEN_HEIGHT;
 
 // Starting speed of a bouncer
 static constexpr bn::fixed BASE_SPEED = 2;
@@ -25,11 +29,19 @@ class Bouncer {
         bn::sprite_ptr sprite =bn::sprite_items::dot.create_sprite();
         bn::fixed x_speed = BASE_SPEED;
 
+        bn::fixed y_speed = BASE_SPEED;
+
         void update(){
             bn::fixed x = sprite.x();
 
+            bn::fixed y = sprite.y();
+
             // Update x position by adding speed
             x += x_speed;
+
+            //Update y posoitions
+
+            y += y_speed;
 
             // If we've gone off the screen on the right
             if(x > MAX_X) {
@@ -44,7 +56,21 @@ class Bouncer {
                 x_speed *= -1;
             }
 
+            // Y speed variables 
+
+            if(y > MAX_Y ){
+                y = MAX_Y;
+                y_speed *= -1;
+            }
+
+            if(y < MIN_Y){
+                y = MIN_Y;
+                y_speed *= -1;
+            }
+
             sprite.set_x(x);
+
+            sprite.set_y(y);
         }
 };
 
